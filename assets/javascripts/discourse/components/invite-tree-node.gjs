@@ -1,5 +1,6 @@
 import Component from "@glimmer/component";
 import { service } from "@ember/service";
+import { gt } from "truth-helpers";
 import avatar from "discourse/helpers/avatar";
 import formatDate from "discourse/helpers/format-date";
 import icon from "discourse-common/helpers/d-icon";
@@ -26,13 +27,18 @@ export default class InviteTreeNode extends Component {
     for (let i = 0; i < this.args.depth - 1; i++) {
       prefix += "│\u00A0\u00A0"; // vertical line + 2 spaces
     }
-    prefix += "├─\u00A0"; // branch + horizontal line + space
+    // Use └─ for last child, ├─ for others
+    prefix += this.args.isLast ? "└─\u00A0" : "├─\u00A0";
     return htmlSafe(prefix);
   }
 
   get nextDepth() {
     return (this.args.depth || 0) + 1;
   }
+
+  isLastChild = (index) => {
+    return index === this.args.user.children.length - 1;
+  };
 
   <template>
     <div class="invite-tree-node">
@@ -44,12 +50,36 @@ export default class InviteTreeNode extends Component {
           {{#if this.hasChildren}}
             <span class="invite-count">[{{this.childCount}}]</span>
           {{/if}}
+          {{#if @user.is_suspended}}
+            <span class="moderation-indicator suspended" title="Suspended">🚫</span>
+          {{/if}}
+          {{#if @user.is_silenced}}
+            <span class="moderation-indicator silenced" title="Silenced">🔇</span>
+          {{/if}}
+          {{#if @user.flags_agreed}}
+            {{#if (gt @user.flags_agreed 0)}}
+              <span class="moderation-indicator flags" title="{{@user.flags_agreed}} agreed flags">⚠️{{@user.flags_agreed}}</span>
+            {{/if}}
+          {{/if}}
+          {{#if @user.problematic_invites_count}}
+            {{#if (gt @user.problematic_invites_count 0)}}
+              <span class="moderation-indicator problematic-invites" title="{{@user.problematic_invites_count}} problematic invites">[{{@user.problematic_invites_count}} bad]</span>
+            {{/if}}
+          {{/if}}
+          {{#if @user.invite_quality_score}}
+            {{#if this.hasChildren}}
+              <span class="quality-score" title="Invite quality score">{{@user.invite_quality_score}}%</span>
+            {{/if}}
+          {{/if}}
         </span>
       </div>
 
       {{#if this.hasChildren}}
-        {{#each @user.children as |child|}}
-          <InviteTreeNode @user={{child}} @depth={{this.nextDepth}} />
+        {{#each @user.children as |child index|}}
+          <InviteTreeNode
+            @user={{child}}
+            @depth={{this.nextDepth}}
+            @isLast={{this.isLastChild index}} />
         {{/each}}
       {{/if}}
     </div>

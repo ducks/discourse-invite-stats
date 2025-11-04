@@ -5,7 +5,7 @@
 }
 
 .invite-tree-header {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 
   h1 {
     margin-bottom: 10px;
@@ -15,10 +15,100 @@
     color: var(--primary-medium);
     font-size: 1.1em;
   }
+}
 
-  .invite-tree-stats {
-    margin-top: 10px;
-    color: var(--primary-high);
+.invite-tree-summary {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: var(--primary-very-low);
+  border-radius: 8px;
+
+  h2 {
+    margin-bottom: 15px;
+    font-size: 1.3em;
+  }
+
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .stat-label {
+        color: var(--primary-medium);
+        font-size: 0.9em;
+      }
+
+      .stat-value {
+        color: var(--primary);
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.invite-tree-problematic {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: var(--danger-low);
+  border-radius: 8px;
+  border: 1px solid var(--danger-medium);
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    color: var(--danger);
+  }
+
+  .problematic-description {
+    color: var(--primary-medium);
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+
+  .problematic-inviters-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--secondary);
+    border-radius: 4px;
+    overflow: hidden;
+
+    th {
+      background: var(--primary-low);
+      padding: 10px;
+      text-align: left;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-low-mid);
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--primary-low);
+
+      a {
+        color: var(--primary);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--tertiary);
+          text-decoration: underline;
+        }
+      }
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  .no-problematic {
+    color: var(--success);
+    font-style: italic;
   }
 }
 
@@ -58,6 +148,34 @@
     .invite-count {
       color: var(--tertiary);
       font-weight: normal;
+    }
+
+    .moderation-indicator {
+      margin-left: 5px;
+      font-size: 0.9em;
+
+      &.suspended {
+        color: var(--danger);
+      }
+
+      &.silenced {
+        color: var(--danger-medium);
+      }
+
+      &.flags {
+        color: var(--danger);
+      }
+
+      &.problematic-invites {
+        color: var(--danger);
+        font-weight: normal;
+      }
+    }
+
+    .quality-score {
+      margin-left: 5px;
+      color: var(--primary-medium);
+      font-size: 0.9em;
     }
   }
 }

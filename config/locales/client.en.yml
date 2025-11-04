@@ -15,3 +15,18 @@ en:
       root_users: "Founding Members"
       loading: "Loading invite tree..."
       error: "Unable to load invite tree"
+      summary:
+        title: "Community Overview"
+        total_users: "Total Users"
+        total_inviters: "Users Who Invited Others"
+        total_invites: "Total Invites Sent"
+        total_problematic: "Problematic Invites"
+        overall_success_rate: "Overall Success Rate"
+      problematic_inviters:
+        title: "Accountability Report"
+        description: "Users who invited 3+ problematic members OR have less than 70% success rate with 5+ invites"
+        username: "Username"
+        total_invites: "Total Invites"
+        problematic_invites: "Problematic"
+        quality_score: "Quality Score"
+        none: "No problematic inviters found"
