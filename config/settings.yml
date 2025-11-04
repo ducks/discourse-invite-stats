@@ -2,6 +2,10 @@ plugins:
   invite_tree_enabled:
     default: false
     client: true
+  invite_tree_allowed_groups:
+    default: ""
+    type: group_list
+    description: 'Groups allowed to view the invite tree (leave empty to allow all logged-in users, staff always have access)'
   invite_tree_show_stats:
     default: true
     client: true

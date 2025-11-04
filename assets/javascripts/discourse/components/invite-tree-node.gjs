@@ -26,13 +26,18 @@ export default class InviteTreeNode extends Component {
     for (let i = 0; i < this.args.depth - 1; i++) {
       prefix += "│\u00A0\u00A0"; // vertical line + 2 spaces
     }
-    prefix += "├─\u00A0"; // branch + horizontal line + space
+    // Use └─ for last child, ├─ for others
+    prefix += this.args.isLast ? "└─\u00A0" : "├─\u00A0";
     return htmlSafe(prefix);
   }
 
   get nextDepth() {
     return (this.args.depth || 0) + 1;
   }
+
+  isLastChild = (index) => {
+    return index === this.args.user.children.length - 1;
+  };
 
   <template>
     <div class="invite-tree-node">
@@ -48,8 +53,11 @@ export default class InviteTreeNode extends Component {
       </div>
 
       {{#if this.hasChildren}}
-        {{#each @user.children as |child|}}
-          <InviteTreeNode @user={{child}} @depth={{this.nextDepth}} />
+        {{#each @user.children as |child index|}}
+          <InviteTreeNode
+            @user={{child}}
+            @depth={{this.nextDepth}}
+            @isLast={{this.isLastChild index}} />
         {{/each}}
       {{/if}}
     </div>

@@ -38,7 +38,18 @@ Then rebuild your container:
 After installation, go to **Admin > Settings > Plugins > discourse-invite-tree**:
 
 - `invite_tree_enabled`: Enable or disable the invite tree feature (default: false)
+- `invite_tree_allowed_groups`: Groups allowed to view the invite tree (default: empty, allows all logged-in users, staff always have access)
 - `invite_tree_show_stats`: Show user statistics in the tree (default: true)
+
+### Access Control
+
+By default, all logged-in users can view the invite tree. You can restrict access by:
+
+1. Adding groups to the `invite_tree_allowed_groups` setting
+2. Only users in those groups (or staff) will have access
+3. Leave empty to allow all logged-in users
+
+### Invite-Only Mode
 
 To enable invite-only registration, use Discourse's native setting at **Admin >
 Settings > Login**:
@@ -54,9 +65,24 @@ The tree shows:
 - Join dates
 - Number of invites each user has made (in brackets)
 - ASCII tree lines showing parent-child relationships
+- Moderation indicators (suspended, silenced, flagged users)
+- Invite quality scores for accountability
 
 Users without an inviter (founding members or self-registered users) appear at
 the root level.
+
+### Moderation Features
+
+The invite tree includes accountability metrics to help identify problematic
+inviters:
+
+- **Invite Quality Score**: Percentage of invites that didn't result in suspended/silenced/flagged users
+- **Problematic Invites Count**: Number of invited users who were suspended, silenced, or have 3+ agreed flags
+- **Problematic Inviters List**: Users who invited 3+ problematic users OR have <70% success rate with 5+ invites
+- **Summary Statistics**: Overall invite success rates and totals
+
+This data helps moderators identify users who consistently invite problematic
+members and may need their invite privileges reviewed.
 
 ## How It Works
 
