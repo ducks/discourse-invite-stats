@@ -10,3 +10,23 @@ plugins:
     default: true
     client: true
     description: 'Show user statistics (post count, trust level) in the invite stats'
+  invite_stats_problematic_threshold:
+    default: 3
+    min: 1
+    max: 10
+    description: 'Number of problematic invites before flagging an inviter in the accountability report'
+  invite_stats_quality_threshold:
+    default: 70
+    min: 0
+    max: 100
+    description: 'Minimum quality score percentage (with minimum invites) before flagging an inviter'
+  invite_stats_min_invites_for_quality:
+    default: 5
+    min: 1
+    max: 20
+    description: 'Minimum invites required before quality score threshold applies'
+  invite_stats_flags_threshold:
+    default: 3
+    min: 1
+    max: 10
+    description: 'Number of agreed flags to mark a user as problematic'
