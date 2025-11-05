@@ -131,15 +131,19 @@ class ::DiscourseInviteStats::InviteStatsController < ::ApplicationController
   end
 
   def count_problematic_invites(user_data)
+    flags_threshold = SiteSetting.invite_stats_flags_threshold
     user_data[:children].count do |child|
       child[:is_suspended] ||
       child[:is_silenced] ||
-      (child[:flags_agreed] && child[:flags_agreed] >= 3)
+      (child[:flags_agreed] && child[:flags_agreed] >= flags_threshold)
     end
   end
 
   def find_problematic_inviters(user_map)
-    # Find users who invited 3+ problematic users OR have <70% success rate with 5+ invites
+    problematic_threshold = SiteSetting.invite_stats_problematic_threshold
+    quality_threshold = SiteSetting.invite_stats_quality_threshold
+    min_invites = SiteSetting.invite_stats_min_invites_for_quality
+
     user_map.values.select do |user|
       next false if user[:children].empty?
 
@@ -147,7 +151,7 @@ class ::DiscourseInviteStats::InviteStatsController < ::ApplicationController
       total_invites = user[:children].size
       quality_score = calculate_invite_quality(user)
 
-      problematic_count >= 3 || (total_invites >= 5 && quality_score < 70)
+      problematic_count >= problematic_threshold || (total_invites >= min_invites && quality_score < quality_threshold)
     end.map do |user|
       {
         id: user[:id],
